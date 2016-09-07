@@ -10,6 +10,7 @@ namespace Resig
 {
     public class ResigViewEngine : VirtualPathProviderViewEngine
     {
+        private Dictionary<string, ResigView> _viewCache = new Dictionary<string, ResigView>();
 
         public ResigViewEngine()
         {
@@ -47,16 +48,30 @@ namespace Resig
 
         }
 
+        protected ResigView GetOrCreateView(ControllerContext context, string path)
+        {
+            ResigView view = null;
+            if (_viewCache.ContainsKey(path))
+            {
+                view = _viewCache[path];
+            }
+            else
+            {
+                string htmlPath = context.HttpContext.Server.MapPath(path);
+                view = new ResigView(htmlPath);
+                _viewCache[path] = view;
+            }
+            return view;
+        }
+
         protected override IView CreatePartialView(ControllerContext controllerContext, string partialPath)
         {
-            string path = controllerContext.HttpContext.Server.MapPath(partialPath);
-            return new ResigView(path);
+            return GetOrCreateView(controllerContext, partialPath);
         }
 
         protected override IView CreateView(ControllerContext controllerContext, string viewPath, string masterPath)
         {
-            string path = controllerContext.HttpContext.Server.MapPath(viewPath);
-            return new ResigView(path);
+            return GetOrCreateView(controllerContext, viewPath);
         }
 
     }

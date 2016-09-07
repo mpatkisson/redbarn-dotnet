@@ -18,7 +18,6 @@ namespace Resig
     public class ResigView : IView
     {
         private string _html;
-        private string _script;
         private IHtmlDocument _document;
         private Selector _domSelector;
 
@@ -76,14 +75,12 @@ namespace Resig
         {
             get
             {
-                if (String.IsNullOrEmpty(_script))
+                var script = String.Empty;
+                using (var reader = new StreamReader(ScriptPath))
                 {
-                    using (var reader = new StreamReader(ScriptPath))
-                    {
-                        _script = reader.ReadToEnd();
-                    }
+                    script = reader.ReadToEnd();
                 }
-                return _script;
+                return script;
             }
         }
 
@@ -118,11 +115,21 @@ namespace Resig
                 source = reader.ReadToEnd();
             }
             ScriptEngine.Execute(source);
+
+            using (var stream = assembly.GetManifestResourceStream("Resig.Scripts.lodash.js"))
+            using (var reader = new StreamReader(stream))
+            {
+                source = reader.ReadToEnd();
+            }
+            ScriptEngine.Execute(source);
         }
 
         private Jint.Runtime.Debugger.StepMode ScriptEngine_Step(object sender, Jint.Runtime.Debugger.DebugInformation e)
         {
-            Debug.WriteLine("{0}: Line {1}, Char {2}", e.CurrentStatement.ToString(), e.CurrentStatement.Location.Start.Line, e.CurrentStatement.Location.Start.Column);
+            if (e.CurrentStatement.Location != null)
+            {
+                Debug.WriteLine("{0}: Line {1}, Char {2}", e.CurrentStatement.ToString(), e.CurrentStatement.Location.Start.Line, e.CurrentStatement.Location.Start.Column);
+            }
             return StepMode.Over;
         }
 
