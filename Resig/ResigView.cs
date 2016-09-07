@@ -20,6 +20,7 @@ namespace Resig
         private string _html;
         private string _script;
         private IHtmlDocument _document;
+        private Selector _domSelector;
 
         public String HtmlPath { get; private set; }
 
@@ -48,6 +49,18 @@ namespace Resig
                     _document = parser.Parse(Html);
                 }
                 return _document;
+            }
+        }
+
+        public Selector DomSelector
+        {
+            get
+            {
+                if (_domSelector == null)
+                {
+                    _domSelector = new Selector(Document);
+                }
+                return _domSelector;
             }
         }
         
@@ -96,10 +109,10 @@ namespace Resig
             ScriptEngine.Step += ScriptEngine_Step;
             ScriptEngine.SetValue("log", new Action<object>(Log));
             ScriptEngine.SetValue("_document", Document);
-            ScriptEngine.SetValue("_domHelper", new DomHelper());
+            ScriptEngine.SetValue("_selector", DomSelector);
             string source = String.Empty;
             Assembly assembly = Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream("Resig.Scripts.resig.js"))
+            using (var stream = assembly.GetManifestResourceStream("Resig.Scripts.selector.js"))
             using (var reader = new StreamReader(stream))
             {
                 source = reader.ReadToEnd();
