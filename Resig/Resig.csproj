@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Match.cs" />
+    <Compile Include="DomScriptEngine.cs" />
     <Compile Include="Selector.cs" />
     <Compile Include="ResigView.cs" />
     <Compile Include="ResigViewEngine.cs" />
