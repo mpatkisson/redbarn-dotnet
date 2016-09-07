@@ -36,6 +36,7 @@ namespace Example.Controllers
                 Bar = "bar",
                 Baz = "baz"
             };
+            ViewBag.Bacon = "Bacon ipsum dolor amet pig meatball turducken";
             return View(model);
         }
     }
