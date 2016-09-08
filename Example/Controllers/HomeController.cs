@@ -35,7 +35,14 @@ namespace Example.Controllers
                 Foo = "foo",
                 Bar = "bar",
                 Baz = "baz",
-                Now = DateTime.Now
+                Now = DateTime.Now,
+                Foos = new List<FooModel>
+                {
+                    new FooModel { Foo = "foo1", Bar = "bar1", Baz = "baz1" },
+                    new FooModel { Foo = "foo2", Bar = "bar2", Baz = "baz2" },
+                    new FooModel { Foo = "foo3", Bar = "bar3", Baz = "baz3" },
+                    new FooModel { Foo = "foo4", Bar = "bar4", Baz = "baz4" }
+                }
             };
             ViewBag.Bacon = "Bacon ipsum dolor amet pig meatball turducken";
             return View(model);

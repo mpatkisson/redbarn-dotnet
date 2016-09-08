@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -95,6 +96,41 @@ namespace Resig
             foreach (var element in Elements)
             {
                 element.InnerHtml = html;
+            }
+            return this;
+        }
+
+        public Match Find(string selector)
+        {
+            Match match = new Match
+            {
+                Selector = selector
+            };
+            foreach (var element in Elements)
+            {
+                IHtmlCollection<IElement> elements = element.QuerySelectorAll(selector);
+                foreach (var ele in elements)
+                {
+                    match.ListOfElements.Add(ele);
+                }
+            }
+            return match;
+        }
+
+        public Match Repeat(IEnumerable items, Action<object, object> cb)
+        {
+            if (items != null && Length > 0)
+            {
+                IElement ele = Elements[0];
+                foreach (var item in items)
+                {
+                    IElement clone = ele.Clone() as IElement;
+                    var match = new Match();
+                    match.ListOfElements.Add(clone);
+                    cb(item, match);
+                    ele.Parent.AppendChild(clone);
+                }
+                ele.Remove();
             }
             return this;
         }

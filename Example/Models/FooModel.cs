@@ -14,5 +14,7 @@ namespace Example.Models
         public string Baz { get; set; }
 
         public DateTime Now { get; set; }
+
+        public IList<FooModel> Foos { get; set; }
     }
 }
