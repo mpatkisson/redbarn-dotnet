@@ -34,7 +34,8 @@ namespace Example.Controllers
             {
                 Foo = "foo",
                 Bar = "bar",
-                Baz = "baz"
+                Baz = "baz",
+                Now = DateTime.Now
             };
             ViewBag.Bacon = "Bacon ipsum dolor amet pig meatball turducken";
             return View(model);

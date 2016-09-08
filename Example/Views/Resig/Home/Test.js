@@ -25,5 +25,9 @@ function bind(model, bag) {
   $('.bar').val(fooval);
   $('.baz').text(model.Baz + ' Mike');
   $('#baz').html('<em>' + loremIpsum + '</em>');
-  $('.bacon').text(bag.Bacon + ' lazy dogs. ' + _.min([4,2,3,6,7]) + ', ' + _.now() + 2);
+  $('.bacon').text(bag.Bacon + ' lazy dogs. ' + _.min([4, 2, 3, 6, 7]) + ', ' + _.now() + 2);
+
+  $('#lodash-now').text(_.now());
+  $('#moment-format').text(moment().format("dddd, MMMM Do YYYY, h:mm:ss a"));
+
 }

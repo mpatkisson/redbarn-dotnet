@@ -12,5 +12,7 @@ namespace Example.Models
         public string Bar { get; set; }
 
         public string Baz { get; set; }
+
+        public DateTime Now { get; set; }
     }
 }

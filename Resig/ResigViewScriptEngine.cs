@@ -10,46 +10,54 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace Resig
 {
-    public class DomScriptEngine : Engine
+    public class ResigViewScriptEngine : Engine
     {
 
         #region [Fields]
 
-        private IHtmlDocument _document;
-        private Selector _domSelector;
         private Action<string> _consoleLogAction = new Action<string>(Log);
 
         #endregion
 
         #region [Properties]
 
-        public string Html { get; private set; }
+        public String HtmlPath { get; private set; }
 
-        public IHtmlDocument Document
+        public String Html
         {
             get
             {
-                if (_document == null)
+                string html = string.Empty;
+                using (var reader = new StreamReader(HtmlPath))
                 {
-                    var parser = new HtmlParser();
-                    _document = parser.Parse(Html);
+                    html = reader.ReadToEnd();
                 }
-                return _document;
+                return html;
             }
         }
 
-        public Selector DomSelector
+        public String BindScriptPath
         {
             get
             {
-                if (_domSelector == null)
+                return Path.ChangeExtension(HtmlPath, "js");
+            }
+        }
+
+        public String BindScript
+        {
+            get
+            {
+                var script = string.Empty;
+                using (var reader = new StreamReader(BindScriptPath))
                 {
-                    _domSelector = new Selector(Document);
+                    script = reader.ReadToEnd();
                 }
-                return _domSelector;
+                return script;
             }
         }
 
@@ -69,16 +77,16 @@ namespace Resig
 
         #region [.ctors]
 
-        public DomScriptEngine(string html)
+        public ResigViewScriptEngine(string htmlPath)
             : base()
         {
-            Configure(html);
+            Configure(htmlPath);
         }
 
-        public DomScriptEngine(string html, Action<Options> options)
+        public ResigViewScriptEngine(string htmlPath, Action<Options> options)
             : base(options)
         {
-            Configure(html);
+            Configure(htmlPath);
         }
 
         #endregion
@@ -116,18 +124,29 @@ namespace Resig
             Execute(source);
         }
 
+        public string Bind(ViewContext context)
+        {
+            var parser = new HtmlParser();
+            IHtmlDocument document = parser.Parse(Html);
+            SetValue("document", document);
+            var selector = new Selector(document);
+            SetValue("__env_selector", selector);
+            Execute(BindScript);
+            Invoke("bind", context.ViewData.Model, context.ViewData);
+            return document.DocumentElement.OuterHtml;
+        }
+
         #endregion
 
         #region [Helper Methods]
 
-        private void Configure(string html)
+        private void Configure(string htmlPath)
         {
-            Html = html;
-            SetValue("document", Document);
-            SetValue("__env_selector", DomSelector);
+            HtmlPath = htmlPath;
             LoadConsole();
             LoadScriptResource("selector");
             LoadScriptResource("lodash");
+            LoadScriptResource("moment");
         }
 
         private static void Log(object value)
