@@ -1,15 +1,15 @@
 ﻿function lorem(model) {
-  return 'lorem ipsum magna carta ' + model.Foo + ' ' + model.Bar + ' baz';
+  return 'lorem ipsum ' + model.Foo + ' ' + model.Bar + ' baz';
 }
 
 function bind(model, bag) {
   var loremIpsum = lorem(model),
       fooval = '';
-  log('fooval: ' + fooval);
-  $('.foo').val(model.Foo + ' and lorem');
+  console.log('fooval: ' + fooval);
+  $('.foo').val(model.Foo + ' and lorems');
   $('#bar').val(model.Bar);
   fooval =  $('.foo').val();
-  log('fooval: ' + fooval);
+  console.log('fooval: ' + fooval);
   $('.bar').val(fooval);
   $('.baz').text(model.Baz + ' Mike');
   $('#baz').html('<em>' + loremIpsum + '</em>');

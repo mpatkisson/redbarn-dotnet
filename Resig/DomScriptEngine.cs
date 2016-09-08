@@ -15,8 +15,16 @@ namespace Resig
 {
     public class DomScriptEngine : Engine
     {
+
+        #region [Fields]
+
         private IHtmlDocument _document;
         private Selector _domSelector;
+        private Action<string> _consoleLogAction = new Action<string>(Log);
+
+        #endregion
+
+        #region [Properties]
 
         public string Html { get; private set; }
 
@@ -45,48 +53,89 @@ namespace Resig
             }
         }
 
+        public Action<string> ConsoleLogAction
+        {
+            get
+            {
+                return _consoleLogAction;
+            }
+            set
+            {
+                _consoleLogAction = value;
+            }
+        }
+
+        #endregion
+
+        #region [.ctors]
+
         public DomScriptEngine(string html)
+            : base()
+        {
+            Configure(html);
+        }
+
+        public DomScriptEngine(string html, Action<Options> options)
+            : base(options)
+        {
+            Configure(html);
+        }
+
+        #endregion
+
+        #region [Public Methods]
+
+        public void Load(string name)
+        {
+            name = name.ToLower();
+            if (name == "console")
+            {
+                LoadConsole();
+            } else
+            {
+                LoadScriptResource(name);
+            }
+        }
+
+        public void LoadConsole()
+        {
+            SetValue("__env_log", ConsoleLogAction);
+            Execute(@"var console = { log: __env_log };");
+        }
+
+        public void LoadScriptResource(string name)
+        {
+            string source = string.Empty;
+            name = "Resig.Scripts." + name + ".js";
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (var stream = assembly.GetManifestResourceStream(name))
+            using (var reader = new StreamReader(stream))
+            {
+                source = reader.ReadToEnd();
+            }
+            Execute(source);
+        }
+
+        #endregion
+
+        #region [Helper Methods]
+
+        private void Configure(string html)
         {
             Html = html;
-            Configure();
+            SetValue("document", Document);
+            SetValue("_selector", DomSelector);
+            LoadConsole();
+            LoadScriptResource("selector");
+            LoadScriptResource("lodash");
         }
 
-        private void Configure()
-        {
-            var engine = new Engine(ops => ops.DebugMode());
-            engine.Step += ScriptEngine_Step;
-            engine.SetValue("log", new Action<object>(Log));
-            engine.SetValue("document", Document);
-            engine.SetValue("_selector", DomSelector);
-            string source = string.Empty;
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream("Resig.Scripts.selector.js"))
-            using (var reader = new StreamReader(stream))
-            {
-                source = reader.ReadToEnd();
-            }
-            engine.Execute(source);
-
-            using (var stream = assembly.GetManifestResourceStream("Resig.Scripts.lodash.js"))
-            using (var reader = new StreamReader(stream))
-            {
-                source = reader.ReadToEnd();
-            }
-            engine.Execute(source);
-        }
-
-        private Jint.Runtime.Debugger.StepMode ScriptEngine_Step(object sender, Jint.Runtime.Debugger.DebugInformation e)
-        {
-            if (e.CurrentStatement.Location != null)
-            {
-                Debug.WriteLine("{0}: Line {1}, Char {2}", e.CurrentStatement.ToString(), e.CurrentStatement.Location.Start.Line, e.CurrentStatement.Location.Start.Column);
-            }
-            return StepMode.Over;
-        }
-
-        private void Log(object value)
+        private static void Log(object value)
         {
             Debug.WriteLine(value);
         }
+
+        #endregion
+
     }
 }
