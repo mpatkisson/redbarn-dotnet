@@ -124,7 +124,7 @@ namespace Resig
         {
             Html = html;
             SetValue("document", Document);
-            SetValue("_selector", DomSelector);
+            SetValue("__env_selector", DomSelector);
             LoadConsole();
             LoadScriptResource("selector");
             LoadScriptResource("lodash");

@@ -4,5 +4,5 @@
 //
 // selector - A CSS selector.
 function $(selector) {
-  return _selector.Query(selector);
+  return __env_selector.Query(selector);
 };
