@@ -81,9 +81,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Match.cs" />
+    <Compile Include="ResigQuery\Append.cs" />
+    <Compile Include="ResigQuery\Repeat.cs" />
+    <Compile Include="ResigQuery\Find.cs" />
+    <Compile Include="ResigQuery\Html.cs" />
+    <Compile Include="ResigQuery\Text.cs" />
+    <Compile Include="ResigQuery\Val.cs" />
+    <Compile Include="ResigQuery\Select.cs" />
+    <Compile Include="ResigQuery.cs" />
     <Compile Include="ResigViewScriptEngine.cs" />
-    <Compile Include="Selector.cs" />
     <Compile Include="ResigView.cs" />
     <Compile Include="ResigViewEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,6 +106,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Scripts\moment.js" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

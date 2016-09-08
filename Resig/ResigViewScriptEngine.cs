@@ -129,8 +129,8 @@ namespace Resig
             var parser = new HtmlParser();
             IHtmlDocument document = parser.Parse(Html);
             SetValue("document", document);
-            var selector = new Selector(document);
-            SetValue("__env_selector", selector);
+            var query = new ResigQuery(document);
+            SetValue("resigQuery", query);
             Execute(BindScript);
             Invoke("bind", context.ViewData.Model, context.ViewData);
             return document.DocumentElement.OuterHtml;
