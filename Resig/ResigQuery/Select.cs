@@ -42,6 +42,17 @@ namespace Resig
                 IElement element = Context.GetElementById(selector);
                 match.Elements.Add(element);
             }
+            else if (selector.StartsWith("<"))
+            {
+                IElement element = Context.CreateElement("template");
+                element.InnerHtml = selector;
+                foreach (var child in element.Children)
+                {
+                    match.Elements.Add(child);
+                }
+                match.Elements.Add(element);
+                selector = null;
+            }
             else
             {
                 IHtmlCollection<IElement> elements = Context.QuerySelectorAll(selector);
