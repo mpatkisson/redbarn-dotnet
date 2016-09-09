@@ -15,6 +15,24 @@ namespace Resig
 
         public ResigQuery Append(string htmlString)
         {
+            foreach(var element in Elements)
+            {
+                IElement created = Context.CreateElement("template");
+                created.InnerHtml = htmlString;
+                if (created.HasChildNodes)
+                {
+                    element.Append(created.ChildNodes.ToArray());
+                }
+            }
+            return this;
+        }
+
+        public ResigQuery Append(ResigQuery query)
+        {
+            foreach (var element in query)
+            {
+                Append(element.OuterHtml);
+            }
             return this;
         }
 

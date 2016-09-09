@@ -33,13 +33,43 @@ function bind(model, bag) {
   $('#moment-format').text(moment().format("dddd, MMMM Do YYYY, h:mm:ss a"));
   $('#moment-net-format').text(moment(model.Now).format("DD-MM-YYYY, h:mm:ss a"));
 
+  $('table > tbody > tr').repeat(model.foos, function (item, row) {
+    row.find('.foo').text(item.foo);
+    row.find('.bar').text(item.bar);
+    row.find('.baz').text(item.baz);
+  });
+
+  var rows = $(
+    '<tr> \
+      <td class="foo">keep</td> \
+      <td class="bar">keep</td> \
+      <td class="baz">keep</td> \
+     </tr> \
+     <tr> \
+      <td class="foo">save</td> \
+      <td class="bar">save</td> \
+      <td class="baz">save</td> \
+     </tr>'
+  );
+
+
+  $('table > tbody')
+    .append(rows)
+    .append(
+      '<tr> \
+        <td class="foo">replace</td> \
+        <td class="bar">replace</td> \
+        <td class="baz">replace</td> \
+       </tr>'
+     );
+
   var items = [
-    { foo: 'foo 1', bar: 'bar 1', baz: 'baz 1' },
-    { foo: 'foo 2', bar: 'bar 2', baz: 'baz 2' },
-    { foo: 'foo 3', bar: 'bar 3', baz: 'baz 3' },
+    { foo: 'oof 1', bar: 'rab 1', baz: 'zab 1' },
+    { foo: 'oof 2', bar: 'rab 2', baz: 'zab 2' },
+    { foo: 'oof 3', bar: 'rab 3', baz: 'zab 3' }
   ];
 
-  $('table > tbody > tr').repeat(model.foos, function (item, row) {
+  $('table > tbody > tr:last-child').repeat(items, function (item, row) {
     row.find('.foo').text(item.foo);
     row.find('.bar').text(item.bar);
     row.find('.baz').text(item.baz);
