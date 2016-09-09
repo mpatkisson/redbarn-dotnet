@@ -36,5 +36,21 @@ namespace Resig
             return this;
         }
 
+        // Covers Element and Text
+        public ResigQuery Append(INode node)
+        {
+            foreach (var element in Elements)
+            {
+                element.Append(node);
+            }
+            return this;
+        }
+
+        public ResigQuery Append(Func<string> func)
+        {
+            string html = func();
+            return Append(html);
+        }
+
     }
 }

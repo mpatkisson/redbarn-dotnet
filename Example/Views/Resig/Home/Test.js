@@ -52,7 +52,6 @@ function bind(model, bag) {
      </tr>'
   );
 
-
   $('table > tbody')
     .append(rows)
     .append(
@@ -74,5 +73,27 @@ function bind(model, bag) {
     row.find('.bar').text(item.bar);
     row.find('.baz').text(item.baz);
   });
+
+  $('table > tbody').append(function () {
+    var now = moment().format('DD-MM-YYYY, h:mm:ss a'),
+        row =
+          '<tr> \
+            <td class="foo">' + now + '</td> \
+            <td class="bar">' + now + '</td> \
+            <td class="baz">' + now + '</td> \
+           </tr>';
+    return row;
+  });
+
+  //$('table > tbody').append(function () {
+  //  var now = moment().format('DD-MM-YYYY, h:mm:ss a'),
+  //      row =
+  //        '<tr> \
+  //          <td class="foo">' + now + '</td> \
+  //          <td class="bar">' + now + '</td> \
+  //          <td class="baz">' + now + '</td> \
+  //         </tr>';
+  //  return $(row)[0];
+  //});
 
 }
