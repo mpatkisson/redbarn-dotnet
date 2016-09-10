@@ -52,6 +52,8 @@ function bind(model, bag) {
      </tr>'
   );
 
+  console.log(rows[0].toString());
+
   $('table > tbody')
     .append(rows)
     .append(
