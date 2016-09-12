@@ -25,28 +25,7 @@ namespace Resig
 
         #region [Properties]
 
-        public String HtmlPath { get; private set; }
-
-        public String Html
-        {
-            get
-            {
-                string html = string.Empty;
-                using (var reader = new StreamReader(HtmlPath))
-                {
-                    html = reader.ReadToEnd();
-                }
-                return html;
-            }
-        }
-
-        public String BindScriptPath
-        {
-            get
-            {
-                return Path.ChangeExtension(HtmlPath, "js");
-            }
-        }
+        public String BindScriptPath { get; private set; }
 
         public String BindScript
         {
@@ -77,16 +56,16 @@ namespace Resig
 
         #region [.ctors]
 
-        public ResigViewScriptEngine(string htmlPath)
+        public ResigViewScriptEngine(string scriptPath)
             : base()
         {
-            Configure(htmlPath);
+            Configure(scriptPath);
         }
 
-        public ResigViewScriptEngine(string htmlPath, Action<Options> options)
+        public ResigViewScriptEngine(string scriptPath, Action<Options> options)
             : base(options)
         {
-            Configure(htmlPath);
+            Configure(scriptPath);
         }
 
         #endregion
@@ -124,15 +103,15 @@ namespace Resig
             Execute(source);
         }
 
-        public string Bind(ViewContext context)
+        public string Bind(string html, object model, ViewDataDictionary viewData)
         {
             var parser = new HtmlParser();
-            IHtmlDocument document = parser.Parse(Html);
+            IHtmlDocument document = parser.Parse(html);
             SetValue("document", document);
             var query = new ResigQuery(document);
             SetValue("resigQuery", query);
             Execute(BindScript);
-            Invoke("bind", context.ViewData.Model, context.ViewData);
+            Invoke("bind", model, viewData);
             return document.DocumentElement.OuterHtml;
         }
 
@@ -140,9 +119,9 @@ namespace Resig
 
         #region [Helper Methods]
 
-        private void Configure(string htmlPath)
+        private void Configure(string scriptPath)
         {
-            HtmlPath = htmlPath;
+            BindScriptPath = scriptPath;
             LoadConsole();
             LoadScriptResource("selector");
             LoadScriptResource("lodash");

@@ -239,6 +239,7 @@
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Resig\Home\Test.js" />
     <Content Include="Views\Resig\Home\Test.html" />
+    <Content Include="Views\Resig\Shared\Layout.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
