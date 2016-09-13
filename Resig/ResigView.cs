@@ -28,7 +28,7 @@ namespace Resig
             string html = GetHtmlFromPath();
             html = IntegrateHtmlWithLayout(html);
             html = ReplaceAttributes(html);
-            html = ScriptEngine.Bind(html, viewContext.ViewData.Model, viewContext.ViewData);
+            html = ScriptEngine.Bind(html, viewContext);
             writer.Write(html);
             writer.Flush();
         }
@@ -80,22 +80,23 @@ namespace Resig
 
         private string ReplaceAttributes(string html)
         {
-            // Get the original
             var parser = new HtmlParser();
             IHtmlDocument doc = parser.Parse(html);
-            foreach (var element in doc.QuerySelectorAll("[data-resig-href]"))
-            {
-                string href = VirtualPathUtility.ToAbsolute(element.GetAttribute("data-resig-href"));
-                element.SetAttribute("href", href);
-                element.RemoveAttribute("data-resig-href");
-            }
-            foreach (var element in doc.QuerySelectorAll("[data-resig-src]"))
-            {
-                string href = VirtualPathUtility.ToAbsolute(element.GetAttribute("data-resig-src"));
-                element.SetAttribute("src", href);
-                element.RemoveAttribute("data-resig-src");
-            }
+            ReplaceAttributes(doc, "href");
+            ReplaceAttributes(doc, "src");
             return doc.DocumentElement.OuterHtml;
+        }
+
+        private void ReplaceAttributes(IHtmlDocument doc, string suffix)
+        {
+            string attribute = String.Format("data-view-{0}", suffix);
+            string selector = String.Format("[{0}]", attribute);
+            foreach (var element in doc.QuerySelectorAll(selector))
+            {
+                string value = VirtualPathUtility.ToAbsolute(element.GetAttribute(attribute));
+                element.SetAttribute(suffix, value);
+                element.RemoveAttribute(attribute);
+            }
         }
     }
 }
