@@ -15,10 +15,10 @@ function lorem(model) {
   return 'lorem ipsum ' + model.Foo + ' ' + model.Bar + ' baz';
 }
 
-function bind(model, bag) {
+function bind(model, bag, context) {
   var loremIpsum = lorem(model),
       fooval = '';
-  console.log('fooval: ' + fooval);
+  console.log('fooval: ' + context.User.Identity.IsAuthenticated);
   $('.foo').val(model.foo + ' and lorems');
   $('#bar').val(model.bar);
   fooval =  $('.foo').val();

@@ -28,7 +28,7 @@ namespace Resig
             string html = GetHtmlFromPath();
             html = IntegrateHtmlWithLayout(html);
             html = ReplaceAttributes(html);
-            html = ScriptEngine.Bind(html, viewContext);
+            html = ScriptEngine.Bind(html, new BindContext(viewContext));
             writer.Write(html);
             writer.Flush();
         }

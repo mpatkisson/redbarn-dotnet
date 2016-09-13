@@ -103,7 +103,7 @@ namespace Resig
             Execute(source);
         }
 
-        public string Bind(string html, ViewContext context)
+        public string Bind(string html, BindContext context)
         {
             var parser = new HtmlParser();
             IHtmlDocument document = parser.Parse(html);
@@ -111,7 +111,7 @@ namespace Resig
             var query = new ResigQuery(document);
             SetValue("resigQuery", query);
             Execute(BindScript);
-            Invoke("bind", context.ViewData.Model, context.ViewData, context);
+            Invoke("bind", context.Model, context.ViewData, context);
             return document.DocumentElement.OuterHtml;
         }
 

@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindContext.cs" />
     <Compile Include="ResigQuery\Append.cs" />
     <Compile Include="ResigQuery\Repeat.cs" />
     <Compile Include="ResigQuery\Find.cs" />
