@@ -19,12 +19,12 @@ function bind(model, bag) {
   var loremIpsum = lorem(model),
       fooval = '';
   console.log('fooval: ' + fooval);
-  $('.foo').val(model.Foo + ' and lorems');
-  $('#bar').val(model.Bar);
+  $('.foo').val(model.foo + ' and lorems');
+  $('#bar').val(model.bar);
   fooval =  $('.foo').val();
   console.log('fooval: ' + fooval);
   $('.bar').val(fooval);
-  $('.baz').text(model.Baz + ' Mike');
+  $('.baz').text(model.baz + ' Mike');
   console.log('we got here');
   $('#baz').html('<em>' + loremIpsum + '</em>');
   $('.bacon').text(bag.Bacon + ' lazy dogs. ' + _.min([4, 2, 3, 6, 7]) + ', ' + model.Now);
