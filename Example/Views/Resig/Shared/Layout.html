@@ -3,11 +3,46 @@
 <head id="head">
   <title>The layout page</title>
   <meta charset="utf-8" />
-  <!--<link href="../../../Content/bootstrap.css" rel="stylesheet" data-replace-href="~/Content/bootstrap.css" />-->
+  <link href="../../../Content/bootstrap.css" rel="stylesheet" data-resig-href="~/Content/bootstrap.css" />
+  <link href="../../../Content/Site.css" rel="stylesheet" data-resig-href="~/Content/bootstrap.css" />
 </head>
 <body>
-  <section id="content">
-    Default content
-  </section>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="../Home/Index" class="navbar-brand">My ASP.NET MVC Application</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="../Home/Index" data-resig-href="~/Home/Index">Home</a>
+          </li>
+          <li>
+            <a href="../Home/About" data-resig-href="~/Home/About">About</a>
+          </li>
+          <li>
+            <a href="../Home/Contact" data-resig-href="~/Home/Contact">Contact</a>
+          </li>
+        </ul>
+        <!--@Html.Partial("_LoginPartial")-->
+      </div>
+    </div>
+  </div>
+  <div class="container body-content">
+    <section id="content">
+      Default content
+    </section>
+    <hr />
+    <footer>
+      <p>&copy; <span>2016</span> - My ASP.NET Application</p>
+    </footer>
+  </div>
+  <script src="../../../Scripts/jquery-1.10.2.js" data-resig-src="~/Scripts/jquery-1.10.2.js"></script>
+  <script src="../../../Scripts/bootstrap.js" data-resig-src="~/Scripts/bootstrap.js"></script>
 </body>
 </html>

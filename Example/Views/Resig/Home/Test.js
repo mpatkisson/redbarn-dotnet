@@ -36,7 +36,7 @@ function bind(model, bag) {
   $('table > tbody > tr').repeat(model.foos, function (item, row) {
     row.find('.foo').text(item.foo);
     row.find('.bar').text(item.bar);
-    row.find('.baz').text(item.baz);
+    row.find('.baz').text(item.baz + ' mike');
   });
 
   var rows = $(

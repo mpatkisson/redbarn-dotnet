@@ -27,6 +27,7 @@ namespace Resig
         {
             string html = GetHtmlFromPath();
             html = IntegrateHtmlWithLayout(html);
+            html = ReplaceAttributes(html);
             html = ScriptEngine.Bind(html, viewContext.ViewData.Model, viewContext.ViewData);
             writer.Write(html);
             writer.Flush();
@@ -75,6 +76,26 @@ namespace Resig
             }
 
             return integrated;
+        }
+
+        private string ReplaceAttributes(string html)
+        {
+            // Get the original
+            var parser = new HtmlParser();
+            IHtmlDocument doc = parser.Parse(html);
+            foreach (var element in doc.QuerySelectorAll("[data-resig-href]"))
+            {
+                string href = VirtualPathUtility.ToAbsolute(element.GetAttribute("data-resig-href"));
+                element.SetAttribute("href", href);
+                element.RemoveAttribute("data-resig-href");
+            }
+            foreach (var element in doc.QuerySelectorAll("[data-resig-src]"))
+            {
+                string href = VirtualPathUtility.ToAbsolute(element.GetAttribute("data-resig-src"));
+                element.SetAttribute("src", href);
+                element.RemoveAttribute("data-resig-src");
+            }
+            return doc.DocumentElement.OuterHtml;
         }
     }
 }
